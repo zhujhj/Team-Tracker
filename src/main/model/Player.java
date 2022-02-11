@@ -5,6 +5,7 @@ public class Player extends Person {
     private int goals;
     private int assists;
 
+    //EFFECTS: creates Player and gives them a name
     public Player(String name) {
         super(name);
     }
@@ -13,6 +14,8 @@ public class Player extends Person {
         this.goals = goals;
     }
 
+    //EFFECTS: adds goals to Player
+    //MODIFIES: this
     public void addGoals(int goals) {
         this.goals += goals;
     }
@@ -25,6 +28,8 @@ public class Player extends Person {
         this.assists = assists;
     }
 
+    //EFFECTS: adds assists to Player
+    //MODIFIES: this
     public void addAssists(int assists) {
         this.assists += assists;
     }

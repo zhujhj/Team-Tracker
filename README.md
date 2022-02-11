@@ -2,12 +2,12 @@
 
 ### What will the application do?
 
-The application I am creating will help sports teams keep track of  
-their progress, as well as their players' progress. For example,  
-the tracker will keep statistics for each player, as well as the  
-overall statistics of the team. Some other functions of the  
-application will be upcoming games, standings or the team, and   
-being able to select which sport is being played.
+The application I am creating is called the **Team Tracker** which  
+will help sports teams keep track of their progress, as well as  
+players' progress. For example, the tracker will keep statistics  
+for each player, as well as the overall statistics of the team.  
+Some other functions of the application will be upcoming games,  
+standings or the team, and being able to select which sport is being played.
 
 ### Who will use it?
 
@@ -25,10 +25,8 @@ not have an application to do this. I am creating this because
 I know it is something my younger self would have wanted.
 
 ### User Stories
-- Story 1
-- Story 2
-- Story 3
-- Story 4
-
-An example of text with **bold** and *italic* fonts.  
+- Create a new team and add it to a list of teams
+- Create a player and add it to a team
+- View list of teams and list of players
+- Edit amount of goals and assists scored by a player
 

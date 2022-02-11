@@ -5,19 +5,23 @@ import java.util.ArrayList;
 public class Team {
 
     private String sport; // one of ice hockey, soccer, basketball, football, or baseball
-    private String name;
-    private ArrayList<Person> people = new ArrayList<Person>(); // list of people on the team
+    private String name; // team name
+    private ArrayList<Person> people = new ArrayList<>(); // list of people on the team
 
+    //EFFECTS: creates Team and gives it a name
     public Team(String name) {
 
         this.name = name;
 
     }
 
+    //EFFECTS: adds Person to Team
+    //MODIFIES: people
     public void addPerson(Person person) {
         people.add(person);
     }
 
+    //EFFECTS: prints the people on the team as well as their goals and assists
     public void printPeople() {
         int counter = 0;
         for (Person p : people) {

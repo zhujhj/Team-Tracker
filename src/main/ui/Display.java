@@ -16,7 +16,27 @@ public class Display {
     int teamCounter = 0;
     int counter = 0;
 
+    //EFFECTS: begins the program
+    //REQUIRES: an integer from 1-4 or x
     public void begin() {
+        while (!input.equals("x")) {
+            printMenu();
+            input = scan.nextLine();
+            if (input.equals("1")) {
+                addTeam();
+            } else if (input.equals("2")) {
+                addPlayer();
+            } else if (input.equals("3")) {
+                displayTeams();
+            } else if (input.equals("4")) {
+                displayPlayers();
+            }
+            System.out.println();
+        }
+    }
+
+    //EFFECTS: prints the menu
+    public void printMenu() {
         System.out.println("___________________________________________________________");
         System.out.println("Welcome to your Team Tracker, enter x at any time to quit.");
         System.out.println("Enter 1 to add new team");
@@ -25,6 +45,8 @@ public class Display {
         System.out.println("Enter 4 to list/edit all players of a team and their stats");
     }
 
+    //EFFECTS: adds a Team to list of teams
+    //MODIFIES: teams
     public void addTeam() {
         System.out.println("Enter team name: ");
         team = new Team(scan.nextLine());
@@ -35,6 +57,9 @@ public class Display {
         System.out.println(teams.get(teamCounter).getSport());
     }
 
+    //EFFECTS: adds a Player to a specific Team
+    //MODIFIES: a team specified by the user
+    //REQUIRES: when selecting the team, user must input the number in front of the team
     public void addPlayer() {
         System.out.println("Which team would you like to add to? ");
         counter = 0;
@@ -51,6 +76,7 @@ public class Display {
         team.printPeople();
     }
 
+    //EFFECTS: prints out the teams
     public void displayTeams() {
         counter = 0;
         for (Team t : teams) {
@@ -59,6 +85,9 @@ public class Display {
         }
     }
 
+    //EFFECTS: prints out players and allows the user to edit the amount of goals or assists they have
+    //MODIFIES: a Player specified by the user
+    //REQUIRES: when selecting the player, user must input the number in front of the player
     public void displayPlayers() {
         System.out.println("Which team? ");
         int whichTeam = Integer.parseInt(scan.nextLine());
