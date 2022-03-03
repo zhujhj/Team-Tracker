@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// Test class
 class TeamTrackerTest {
 
     Display display = new Display();
@@ -30,10 +31,10 @@ class TeamTrackerTest {
         assertEquals(team.getPeople(), ap);
     }
 
-//    @Test
-//    void testPrintPeople() {
-//
-//    }
+    @Test
+    void testPrintPeople() {
+
+    }
 
     @Test
     void testAddGoals() {
@@ -60,6 +61,11 @@ class TeamTrackerTest {
 
         ((Player) player).addAssists(-5);
         assertEquals(((Player) player).getAssists(), 0);
+    }
+
+    @Test
+    void testBegin() {
+
     }
 
 }

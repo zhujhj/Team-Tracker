@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+
+// This class represents a Player who has goals and assists
 public class Player extends Person {
 
     private int goals;
@@ -36,6 +39,19 @@ public class Player extends Person {
 
     public int getAssists() {
         return assists;
+    }
+
+    public String toString() {
+        return getName() + ": " + goals + ": " + assists;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", getName());
+        json.put("goals", goals);
+        json.put("assists", assists);
+        return json;
     }
 
 }

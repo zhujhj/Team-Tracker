@@ -1,8 +1,12 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 import java.util.ArrayList;
 
-public class Team {
+// This class represents a sport team with a name and its members
+public class Team implements Writable {
 
     private String sport; // one of ice hockey, soccer, basketball, football, or baseball
     private String name; // team name
@@ -53,6 +57,25 @@ public class Team {
 
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("players", playersToJson());
+        return json;
+    }
+
+    // EFFECTS: returns players in this workroom as a JSON array
+    private JSONArray playersToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Person p : people) {
+            jsonArray.put(p.toJson());
+        }
+
+        return jsonArray;
     }
 
 }

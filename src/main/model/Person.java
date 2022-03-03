@@ -1,6 +1,10 @@
 package model;
 
-public class Person { // Person can be one of Player, Coach, or Manager (some will be implemented in the future)
+import org.json.JSONObject;
+import persistence.Writable;
+
+// Person can be one of Player, Coach, or Manager (some will be implemented in the future)
+public class Person implements Writable {
 
     private String name;
 
@@ -19,4 +23,8 @@ public class Person { // Person can be one of Player, Coach, or Manager (some wi
         return this.name;
     }
 
+    @Override
+    public JSONObject toJson() {
+        return null;
+    }
 }
