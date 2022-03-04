@@ -1,5 +1,6 @@
 package persistence;
 
+import model.ListOfTeams;
 import model.Team;
 import org.json.JSONObject;
 
@@ -26,8 +27,13 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of workroom to file
-    public void write(Team t) {
-        JSONObject json = t.toJson();
+//    public void write(Team t) {
+//        JSONObject json = t.toJson();
+//        saveToFile(json.toString(TAB));
+//    }
+
+    public void write(ListOfTeams lot) {
+        JSONObject json = lot.toJson();
         saveToFile(json.toString(TAB));
     }
 

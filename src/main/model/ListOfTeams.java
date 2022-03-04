@@ -34,6 +34,10 @@ public class ListOfTeams implements Writable {
         }
     }
 
+    public Team getTeam(int i) {
+        return this.teams.get(i);
+    }
+
     public void setTeams(ArrayList<Team> teams) {
         this.teams = teams;
     }

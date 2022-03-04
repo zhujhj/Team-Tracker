@@ -1,5 +1,6 @@
 package ui;
 
+import model.ListOfTeams;
 import model.Person;
 import model.Player;
 import model.Team;
@@ -17,7 +18,7 @@ public class Display {
     private static final String JSON_STORE = "./data/team.json";
     Scanner scan = new Scanner(System.in);
     Team team;
-    ArrayList<Team> teams = new ArrayList<>();
+    ListOfTeams teams = new ListOfTeams();
     String input = "";
     int teamCounter = 0;
     int counter = 0;
@@ -39,9 +40,9 @@ public class Display {
             } else if (input.equals("4")) {
                 displayPlayers();
             } else if (input.equals("5")) {
-                saveTeam();
+                saveTeams();
             } else if (input.equals("6")) {
-                loadTeam();
+                loadTeams();
             }
             System.out.println();
         }
@@ -64,11 +65,12 @@ public class Display {
     public void addTeam() {
         System.out.println("Enter team name: ");
         team = new Team(scan.nextLine());
-        teams.add(team);
-        System.out.println(teams.get(teamCounter).getName());
+        teams.addTeam(team);
+        System.out.println(teams.getTeam(teamCounter).getName());
         System.out.println("Enter team sport: ");
-        teams.get(teamCounter).setSport(scan.nextLine());
-        System.out.println(teams.get(teamCounter).getSport());
+        teams.getTeam(teamCounter).setSport(scan.nextLine());
+        System.out.println(teams.getTeam(teamCounter).getSport());
+        teamCounter++;
     }
 
     //EFFECTS: adds a Player to a specific Team
@@ -77,12 +79,12 @@ public class Display {
     public void addPlayer() {
         System.out.println("Which team would you like to add to? ");
         counter = 0;
-        for (Team t : teams) {
+        for (Team t : teams.getTeams()) {
             System.out.println(counter + " " + t.getName());
             counter++;
         }
         int whichTeam = Integer.parseInt(scan.nextLine());
-        team = teams.get(whichTeam);
+        team = teams.getTeam(whichTeam);
         System.out.println(team.getName());
         System.out.println("What is the player name?");
         Person person = new Player(scan.nextLine());
@@ -93,7 +95,7 @@ public class Display {
     //EFFECTS: prints out the teams
     public void displayTeams() {
         counter = 0;
-        for (Team t : teams) {
+        for (Team t : teams.getTeams()) {
             System.out.println(counter + " " + t.getName());
             counter++;
         }
@@ -105,7 +107,7 @@ public class Display {
     public void displayPlayers() {
         System.out.println("Which team? ");
         int whichTeam = Integer.parseInt(scan.nextLine());
-        team = teams.get(whichTeam);
+        team = teams.getTeam(whichTeam);
         System.out.println(team.getName() + " players: ");
         team.printPeople();
         System.out.println("Which player? ");
@@ -122,10 +124,20 @@ public class Display {
     }
 
     // EFFECTS: saves the workroom to file
-    private void saveTeam() {
+//    private void saveTeam() {
+//        try {
+//            jsonWriter.open();
+//            jsonWriter.write(team);
+//            jsonWriter.close();
+//            System.out.println("Saved " + team.getName() + " to " + JSON_STORE);
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to write to file: " + JSON_STORE);
+//        }
+//    }
+    private void saveTeams() {
         try {
             jsonWriter.open();
-            jsonWriter.write(team);
+            jsonWriter.write(teams);
             jsonWriter.close();
             System.out.println("Saved " + team.getName() + " to " + JSON_STORE);
         } catch (FileNotFoundException e) {
@@ -135,11 +147,20 @@ public class Display {
 
     // MODIFIES: this
     // EFFECTS: loads workroom from file
-    private void loadTeam() {
+//    private void loadTeam() {
+//        try {
+//            team = jsonReader.read();
+//            teams.addTeam(team);
+//            System.out.println("Loaded " + team.getName() + " from " + JSON_STORE);
+//        } catch (IOException e) {
+//            System.out.println("Unable to read from file: " + JSON_STORE);
+//        }
+//    }
+    private void loadTeams() {
         try {
-            team = jsonReader.read();
-            teams.add(team);
-            System.out.println("Loaded " + team.getName() + " from " + JSON_STORE);
+            teams = jsonReader.read();
+//            teams.addTeam(team);
+            System.out.println("Loaded teams from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }

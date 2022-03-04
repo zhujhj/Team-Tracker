@@ -1,5 +1,6 @@
 package persistence;
 
+import model.ListOfTeams;
 import model.Person;
 import model.Player;
 import model.Team;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.json.*;
@@ -23,10 +25,16 @@ public class JsonReader {
 
     // EFFECTS: reads team from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Team read() throws IOException {
+//    public Team read() throws IOException {
+//        String jsonData = readFile(source);
+//        JSONObject jsonObject = new JSONObject(jsonData);
+//        return parseTeam(jsonObject);
+//    }
+
+    public ListOfTeams read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseTeam(jsonObject);
+        return parseListOfTeams(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -40,12 +48,37 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
+    private ListOfTeams parseListOfTeams(JSONObject jsonObject) {
+        ListOfTeams lot = new ListOfTeams();
+        addTeams(lot, jsonObject);
+        return lot;
+    }
+
     // EFFECTS: parses team from JSON object and returns it
-    private Team parseTeam(JSONObject jsonObject) {
+//    private Team parseTeam(JSONObject jsonObject) {
+//        String name = jsonObject.getString("name");
+//        Team t = new Team(name);
+//        addPlayers(t, jsonObject);
+//        return t;
+//    }
+
+    private void addTeams(ListOfTeams lot, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("teams");
+        for (Object json : jsonArray) {
+            JSONObject nextTeam = (JSONObject) json;
+            addTeam(lot, nextTeam);
+        }
+    }
+
+    // MODIFIES: wr
+    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    private void addTeam(ListOfTeams lot, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-        Team t = new Team(name);
-        addPlayers(t, jsonObject);
-        return t;
+//        Category category = Category.valueOf(jsonObject.getString("category"));
+        Team team = new Team(name);
+        team.setSport(jsonObject.getString("sport"));
+        addPlayers(team, jsonObject);
+        lot.addTeam(team);
     }
 
     // MODIFIES: wr
