@@ -24,7 +24,7 @@ public class Player extends Person {
     }
 
     public int getGoals() {
-        return goals;
+        return this.goals;
     }
 
     public void setAssists(int assists) {
@@ -38,7 +38,7 @@ public class Player extends Person {
     }
 
     public int getAssists() {
-        return assists;
+        return this.assists;
     }
 
     public String toString() {

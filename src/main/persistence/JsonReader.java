@@ -1,6 +1,7 @@
 package persistence;
 
 import model.Person;
+import model.Player;
 import model.Team;
 
 import java.io.IOException;
@@ -62,7 +63,9 @@ public class JsonReader {
     private void addPlayer(Team t, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
 //        Category category = Category.valueOf(jsonObject.getString("category"));
-        Person player = new Person(name);
+        Person player = new Player(name);
+        ((Player) player).setAssists(jsonObject.getInt("assists"));
+        ((Player) player).setGoals(jsonObject.getInt("goals"));
         t.addPerson(player);
     }
 }
