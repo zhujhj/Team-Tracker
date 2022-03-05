@@ -29,4 +29,6 @@ because I know it is something my younger self would have wanted.
 - Create a player and add it to a team
 - View list of teams and list of players
 - Edit amount of goals and assists scored by a player
+- Save list of teams to a file
+- Load list of teams from a file
 

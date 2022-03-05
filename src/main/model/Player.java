@@ -8,9 +8,11 @@ public class Player extends Person {
     private int goals;
     private int assists;
 
-    //EFFECTS: creates Player and gives them a name
+    //EFFECTS: creates Player and gives them a name and 0 goals and assists
     public Player(String name) {
         super(name);
+        this.goals = 0;
+        this.assists = 0;
     }
 
     public void setGoals(int goals) {

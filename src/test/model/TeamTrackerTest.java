@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.Display;
 
@@ -11,9 +13,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TeamTrackerTest {
 
     Display display = new Display();
-    ArrayList<Team> teams = new ArrayList<>();
-    Team team = new Team("Ice Raiders");
+    ListOfTeams teams;
+    Team team;
     Person player;
+
+    @BeforeEach
+    void runBefore() {
+        teams = new ListOfTeams();
+        team = new Team("Ice Raiders");
+        player = new Player("Jason");
+    }
 
     @Test
     void testAddPerson() {
@@ -32,8 +41,44 @@ class TeamTrackerTest {
     }
 
     @Test
-    void testPrintPeople() {
+    void testAddTeam() {
+        teams.addTeam(team);
+        ArrayList<Team> alt = new ArrayList<>();
+        alt.add(team);
+        assertEquals(teams.getTeams(), alt);
+        Team t = new Team("Raptors");
+        teams.addTeam(t);
+        alt.add(t);
+        assertEquals(teams.getTeams(), alt);
+    }
 
+    //{"assists":5,"name":"jason","goals":5}
+
+    @Test
+    void testPlayerToJson() {
+        assertEquals(player.toJson().toString(), "{\"assists\":0,\"name\":\"Jason\",\"goals\":0}");
+    }
+
+    @Test
+    void testTeamToJson() {
+        team.addPerson(player);
+        team.setSport("Hockey");
+        assertEquals(team.toJson().toString(),
+                "{\"players\":[{\"assists\":0,\"name\":\"Jason\"," +
+                        "\"goals\":0}],\"name\":\"Ice Raiders\",\"sport\":\"Hockey\"}");
+    }
+
+    @Test
+    void testListOfTeamsToJson() {
+        Team team1 = new Team("Raptors");
+        team1.setSport("Basketball");
+        team.addPerson(player);
+        team.setSport("Hockey");
+        teams.addTeam(team);
+        teams.addTeam(team1);
+        assertEquals(teams.toJson().toString(), "{\"teams\":[{\"players\":[{\"assists\":0,\"name\":\"Jason\"," +
+                "\"goals\":0}],\"name\":\"Ice Raiders\",\"sport\":\"Hockey\"},{\"players\":[],\"name\":\"Raptors\"," +
+                "\"sport\":\"Basketball\"}]}");
     }
 
     @Test
@@ -61,11 +106,6 @@ class TeamTrackerTest {
 
         ((Player) player).addAssists(-5);
         assertEquals(((Player) player).getAssists(), 0);
-    }
-
-    @Test
-    void testBegin() {
-
     }
 
 }

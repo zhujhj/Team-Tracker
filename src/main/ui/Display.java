@@ -9,7 +9,6 @@ import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 // This class provides the console application
@@ -123,39 +122,21 @@ public class Display {
         }
     }
 
-    // EFFECTS: saves the workroom to file
-//    private void saveTeam() {
-//        try {
-//            jsonWriter.open();
-//            jsonWriter.write(team);
-//            jsonWriter.close();
-//            System.out.println("Saved " + team.getName() + " to " + JSON_STORE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + JSON_STORE);
-//        }
-//    }
+    // EFFECTS: saves teams to file
     private void saveTeams() {
         try {
             jsonWriter.open();
             jsonWriter.write(teams);
             jsonWriter.close();
-            System.out.println("Saved " + team.getName() + " to " + JSON_STORE);
+            System.out.println("Saved  teams  to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
-//    private void loadTeam() {
-//        try {
-//            team = jsonReader.read();
-//            teams.addTeam(team);
-//            System.out.println("Loaded " + team.getName() + " from " + JSON_STORE);
-//        } catch (IOException e) {
-//            System.out.println("Unable to read from file: " + JSON_STORE);
-//        }
-//    }
+    // EFFECTS: loads list of teams from file
+
     private void loadTeams() {
         try {
             teams = jsonReader.read();

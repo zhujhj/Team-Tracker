@@ -68,7 +68,7 @@ public class Team implements Writable {
         return json;
     }
 
-    // EFFECTS: returns players in this workroom as a JSON array
+    // EFFECTS: returns players in this team as a JSON array
     private JSONArray playersToJson() {
         JSONArray jsonArray = new JSONArray();
 

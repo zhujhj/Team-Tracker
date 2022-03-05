@@ -5,33 +5,21 @@ import org.json.JSONObject;
 import persistence.Writable;
 import java.util.ArrayList;
 
-// This class represents a sport team with a name and its members
+// This class represents a list of sports teams
 public class ListOfTeams implements Writable {
+    private ArrayList<Team> teams;
 
-//    private String sport; // one of ice hockey, soccer, basketball, football, or baseball
-//    private String name; // team name
-    private ArrayList<Team> teams; // list of people on the team
-
-    //EFFECTS: creates Team and gives it a name
+    //EFFECTS: creates a list of teams
     public ListOfTeams() {
 
         teams = new ArrayList<>();
 
     }
 
-    //EFFECTS: adds Person to Team
-    //MODIFIES: people
+    //EFFECTS: adds Team to ListOfTeams
+    //MODIFIES: teams
     public void addTeam(Team team) {
         teams.add(team);
-    }
-
-    //EFFECTS: prints the people on the team as well as their goals and assists
-    public void printTeams() {
-        int counter = 0;
-        for (Team t : teams) {
-            System.out.println(counter + " " + t.getName());
-            counter++;
-        }
     }
 
     public Team getTeam(int i) {
@@ -49,12 +37,11 @@ public class ListOfTeams implements Writable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-//        json.put("name", name);
         json.put("teams", teamsToJson());
         return json;
     }
 
-    // EFFECTS: returns players in this workroom as a JSON array
+    // EFFECTS: returns teams in list of teams as a JSON array
     private JSONArray teamsToJson() {
         JSONArray jsonArray = new JSONArray();
 
