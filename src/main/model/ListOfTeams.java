@@ -48,7 +48,6 @@ public class ListOfTeams implements Writable {
         for (Team t : teams) {
             jsonArray.put(t.toJson());
         }
-
         return jsonArray;
     }
 

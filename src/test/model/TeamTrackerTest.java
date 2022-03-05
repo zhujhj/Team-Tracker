@@ -108,4 +108,26 @@ class TeamTrackerTest {
         assertEquals(((Player) player).getAssists(), 0);
     }
 
+    @Test
+    void testPlayersToJson() {
+        team.addPerson(player);
+        assertEquals(team.toJson().toString(), "{\"players\":[{\"assists\":0,\"name\":\"Jason\",\"goals\":0}]," +
+                "\"name\":\"Ice Raiders\"}");
+        Person player1 = new Player("Emma");
+        team.addPerson(player1);
+        assertEquals(team.toJson().toString(), "{\"players\":[{\"assists\":0,\"name\":\"Jason\",\"goals\":0}," +
+                "{\"assists\":0,\"name\":\"Emma\",\"goals\":0}],\"name\":\"Ice Raiders\"}");
+    }
+
+    @Test
+    void testTeamsToJson() {
+        teams.addTeam(team);
+        assertEquals(teams.toJson().toString(), "{\"teams\":[{\"players\":[],\"name\":\"Ice Raiders\"}]}");
+        Team team1 = new Team("Raptors");
+        team1.addPerson(player);
+        teams.addTeam(team1);
+        assertEquals(teams.toJson().toString(), "{\"teams\":[{\"players\":[],\"name\":\"Ice Raiders\"}," +
+                "{\"players\":[{\"assists\":0,\"name\":\"Jason\",\"goals\":0}],\"name\":\"Raptors\"}]}");
+    }
+
 }

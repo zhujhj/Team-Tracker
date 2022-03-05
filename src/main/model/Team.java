@@ -75,7 +75,7 @@ public class Team implements Writable {
         for (Person p : people) {
             jsonArray.put(p.toJson());
         }
-
+        System.out.println(jsonArray);
         return jsonArray;
     }
 
