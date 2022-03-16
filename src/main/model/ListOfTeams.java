@@ -34,6 +34,14 @@ public class ListOfTeams implements Writable {
         return this.teams;
     }
 
+    public String toString() {
+        String listOfTeams = "";
+        for (Team t : teams) {
+            listOfTeams += t.getName() + " " + t.getSport() + ", ";
+        }
+        return listOfTeams;
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

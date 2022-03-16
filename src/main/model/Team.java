@@ -26,14 +26,14 @@ public class Team implements Writable {
     }
 
     //EFFECTS: prints the people on the team as well as their goals and assists
-    public void printPeople() {
-        int counter = 0;
-        for (Person p : people) {
-            System.out.println(counter + " " + p.getName() + " has "
-                    + ((Player) p).getGoals() + " goals and " + ((Player) p).getAssists() + " assists");
-            counter++;
-        }
-    }
+//    public void printPeople() {
+//        int counter = 0;
+//        for (Person p : people) {
+//            System.out.println(counter + " " + p.getName() + " has "
+//                    + ((Player) p).getGoals() + " goals and " + ((Player) p).getAssists() + " assists");
+//            counter++;
+//        }
+//    }
 
     public void setPeople(ArrayList<Person> people) {
         this.people = people;

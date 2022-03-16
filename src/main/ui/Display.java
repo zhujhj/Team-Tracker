@@ -88,7 +88,17 @@ public class Display {
         System.out.println("What is the player name?");
         Person person = new Player(scan.nextLine());
         team.addPerson(person);
-        team.printPeople();
+        printPeople(team);
+    }
+
+    //EFFECTS: prints the people on the team as well as their goals and assists
+    public void printPeople(Team t) {
+        int counter = 0;
+        for (Person p : t.getPeople()) {
+            System.out.println(counter + " " + p.getName() + " has "
+                    + ((Player) p).getGoals() + " goals and " + ((Player) p).getAssists() + " assists");
+            counter++;
+        }
     }
 
     //EFFECTS: prints out the teams
@@ -108,7 +118,7 @@ public class Display {
         int whichTeam = Integer.parseInt(scan.nextLine());
         team = teams.getTeam(whichTeam);
         System.out.println(team.getName() + " players: ");
-        team.printPeople();
+        printPeople(team);
         System.out.println("Which player? ");
         Person whichPlayer = team.getPeople().get(Integer.parseInt(scan.nextLine()));
         System.out.println("Edit goals or assists? (g or a) ");
