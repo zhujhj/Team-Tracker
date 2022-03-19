@@ -1,6 +1,8 @@
 package ui;
 
 import model.ListOfTeams;
+import model.Person;
+import model.Player;
 import model.Team;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -11,12 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Screen {
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 700;
+    Player player;
     Team team;
     ListOfTeams teams;
     private static final String JSON_STORE = "./data/team.json";
@@ -99,9 +103,61 @@ public class Screen {
                     public void actionPerformed(ActionEvent e) {
                         String data = "";
                         if (list1.getSelectedIndex() != -1) {
-                            data = "Team Selected: " + list1.getSelectedValue();
-                            label.setText(data);
-                            label.setBounds(50, 15, 200, 20);
+                            JFrame frame2 = new JFrame();
+//                            data = "Team Selected: " + list1.getSelectedValue();
+//                            label.setText(data);
+//                            label.setBounds(50, 15, 200, 20);
+                            final DefaultListModel<String> l2 = new DefaultListModel<>();
+                            team = teams.getTeams().get(list1.getSelectedIndex());
+                            for (Person p : team.getPeople()) {
+                                l2.addElement(p.getName());
+                            }
+                            final JList<String> list2 = new JList<>(l2);
+                            list2.setBounds(75,75, 75,75);
+
+                            JButton b1 = new JButton("Add New Player");
+                            b1.setBounds(50,20,120,30);
+
+                            JButton b2 = new JButton("Edit");
+                            b2.setBounds(50,150,120,30);
+
+                            JScrollPane scrollPane1 = new JScrollPane();
+                            scrollPane1.setViewportView(list2);
+                            list2.setLayoutOrientation(JList.VERTICAL);
+                            scrollPane1.setBounds(50,50, 125,100);
+                            frame2.add(scrollPane1);
+                            frame2.add(b1);
+                            frame2.add(b2);
+                            frame2.setSize(250,225);
+                            frame2.setLayout(null);
+                            frame2.setVisible(true);
+
+                            b1.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    String playerName = JOptionPane.showInputDialog(f,"Enter Player Name");
+                                    player = new Player(playerName);
+                                    team.addPerson(player);
+                                }
+                            });
+
+                            b2.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if (list2.getSelectedIndex() != -1) {
+                                        Person person = team.getPeople().get(list2.getSelectedIndex());
+                                        player = (Player) person;
+                                        String playerGoals = JOptionPane.showInputDialog(f,player.getName()
+                                                + " has " + player.getGoals()
+                                                + " goals. How many would you like to add?");
+                                        player.addGoals(Integer.parseInt(playerGoals));
+                                        String playerAssists = JOptionPane.showInputDialog(f,player.getName()
+                                                + " has " + player.getAssists()
+                                                + " assists. How many would you like to add?");
+                                        player.addAssists(Integer.parseInt(playerAssists));
+                                    }
+                                }
+                            });
                         }
 //                        if (list2.getSelectedIndex() != -1) {
 //                            data += ", FrameWork Selected: ";
@@ -122,6 +178,7 @@ public class Screen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveTeams();
+                JOptionPane.showMessageDialog(f,"Data Saved.");
             }
         });
 
@@ -132,6 +189,7 @@ public class Screen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadTeams();
+                JOptionPane.showMessageDialog(f,"Data Loaded.");
             }
         });
 
