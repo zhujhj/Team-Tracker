@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Screen {
 
@@ -27,183 +25,233 @@ public class Screen {
     private JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
     private JsonReader jsonReader = new JsonReader(JSON_STORE);
 
-//    private JPanel teamTracker;
-//    private JPanel panel;
+    JFrame mainFrame;
+    JPanel mainPanel;
+    JButton newTeamButton;
+    JButton viewTeamsButton;
+    JButton saveDataButton;
+    JButton loadDataButton;
+    JFrame viewTeamFrame;
+    JLabel viewTeamLabel;
+    JButton selectTeamButton;
+    DefaultListModel<String> listModelTeams;
+    JList<String> jlistTeams;
+    JScrollPane teamsScrollPane;
+    JFrame viewPlayersFrame;
+    DefaultListModel<String> listModelPlayers;
+    JList<String> jlistPlayers;
+    JButton newPlayerButton;
+    JButton editPlayerButton;
+    JScrollPane playerScrollPane;
 
     public Screen() {
 
         teams = new ListOfTeams();
-        createPanel();
+        createTeamTracker();
 
     }
 
-    public void createPanel() {
-//        panel = new JPanel();
-//        panel.setBounds(40,80,200,200);
-//        JFrame f = new JFrame("Team Tracker");
-        JFrame f = new JFrame("Team Tracker");
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        f.pack();
-        f.setResizable(true);
-        f.setVisible(true);
-        f.setSize(400, 400);
+    public void createTeamTracker() {
+        createMainFrame();
+        createMainPanel();
+        createButtons();
 
-        JPanel panel = new JPanel();
-        panel.setBounds(80,80,200,200);
-        panel.setBackground(Color.gray);
+        addNewTeam();
+        viewTeams();
 
-        JButton b1 = new JButton("Add New Team");
-        b1.setBounds(50,100,150,30);
-        b1.setBackground(Color.yellow);
-        b1.addActionListener(new ActionListener() {
+        saveAndLoadData();
+        addToMainPanel();
+    }
+
+    public void createMainFrame() {
+        mainFrame = new JFrame("Team Tracker");
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.pack();
+        mainFrame.setResizable(true);
+        mainFrame.setVisible(true);
+        mainFrame.setSize(400, 400);
+    }
+
+    public void createMainPanel() {
+        mainPanel = new JPanel();
+        mainPanel.setBounds(80,80,200,200);
+        mainPanel.setBackground(Color.gray);
+    }
+
+    public void createButtons() {
+
+        newTeamButton = new JButton("Add New Team");
+        newTeamButton.setBounds(50,100,150,30);
+        newTeamButton.setBackground(Color.yellow);
+
+        viewTeamsButton = new JButton("View All Teams");
+        viewTeamsButton.setBounds(50,100,150,30);
+        viewTeamsButton.setBackground(Color.green);
+
+        saveDataButton = new JButton("Save Data");
+        saveDataButton.setBounds(50,100,150,30);
+        saveDataButton.setBackground(Color.green);
+
+        loadDataButton = new JButton("Load Data");
+        loadDataButton.setBounds(50,100,150,30);
+        loadDataButton.setBackground(Color.green);
+
+    }
+
+    public void addNewTeam() {
+        newTeamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Add New Team");
-                frame = new JFrame();
-                String teamName = JOptionPane.showInputDialog(f,"Enter Team Name");
-                String teamSport = JOptionPane.showInputDialog(f,"Enter Team Sport");
+                String teamName = JOptionPane.showInputDialog(mainFrame,"Enter Team Name");
+                String teamSport = JOptionPane.showInputDialog(mainFrame,"Enter Team Sport");
                 team = new Team(teamName);
                 team.setSport(teamSport);
                 teams.addTeam(team);
                 System.out.println(teams.toString());
             }
         });
+    }
 
-        JButton b2 = new JButton("View All Teams");
-        b2.setBounds(50,100,150,30);
-        b2.setBackground(Color.green);
-        b2.addActionListener(new ActionListener() {
+    public void viewTeams() {
+        viewTeamsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame1 = new JFrame();
-                final JLabel label = new JLabel();
-                label.setSize(500,100);
-                JButton b = new JButton("Show");
-                b.setBounds(75,150,80,30);
-                final DefaultListModel<String> l1 = new DefaultListModel<>();
-                for (Team t : teams.getTeams()) {
-                    l1.addElement(t.getName());
-                }
-                final JList<String> list1 = new JList<>(l1);
-                list1.setBounds(75,75, 75,75);
 
-                JScrollPane scrollPane = new JScrollPane();
-                scrollPane.setViewportView(list1);
-                list1.setLayoutOrientation(JList.VERTICAL);
-                scrollPane.setBounds(50,50, 125,100);
+                createViewTeamFrame();
 
-                frame1.add(scrollPane);
-//                frame1.add(list2);
-                frame1.add(b);
-                frame1.add(label);
-                frame1.setSize(250,225);
-                frame1.setLayout(null);
-                frame1.setVisible(true);
-                b.addActionListener(new ActionListener() {
+                selectTeamButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         String data = "";
-                        if (list1.getSelectedIndex() != -1) {
-                            JFrame frame2 = new JFrame();
-//                            data = "Team Selected: " + list1.getSelectedValue();
-//                            label.setText(data);
-//                            label.setBounds(50, 15, 200, 20);
-                            final DefaultListModel<String> l2 = new DefaultListModel<>();
-                            team = teams.getTeams().get(list1.getSelectedIndex());
-                            for (Person p : team.getPeople()) {
-                                l2.addElement(p.getName());
-                            }
-                            final JList<String> list2 = new JList<>(l2);
-                            list2.setBounds(75,75, 75,75);
+                        if (jlistTeams.getSelectedIndex() != -1) {
 
-                            JButton b1 = new JButton("Add New Player");
-                            b1.setBounds(50,20,120,30);
+                            createViewPlayersFrame();
 
-                            JButton b2 = new JButton("Edit");
-                            b2.setBounds(50,150,120,30);
+                            addNewPlayer();
+                            editPlayer();
 
-                            JScrollPane scrollPane1 = new JScrollPane();
-                            scrollPane1.setViewportView(list2);
-                            list2.setLayoutOrientation(JList.VERTICAL);
-                            scrollPane1.setBounds(50,50, 125,100);
-                            frame2.add(scrollPane1);
-                            frame2.add(b1);
-                            frame2.add(b2);
-                            frame2.setSize(250,225);
-                            frame2.setLayout(null);
-                            frame2.setVisible(true);
-
-                            b1.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    String playerName = JOptionPane.showInputDialog(f,"Enter Player Name");
-                                    player = new Player(playerName);
-                                    team.addPerson(player);
-                                }
-                            });
-
-                            b2.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    if (list2.getSelectedIndex() != -1) {
-                                        Person person = team.getPeople().get(list2.getSelectedIndex());
-                                        player = (Player) person;
-                                        String playerGoals = JOptionPane.showInputDialog(f,player.getName()
-                                                + " has " + player.getGoals()
-                                                + " goals. How many would you like to add?");
-                                        player.addGoals(Integer.parseInt(playerGoals));
-                                        String playerAssists = JOptionPane.showInputDialog(f,player.getName()
-                                                + " has " + player.getAssists()
-                                                + " assists. How many would you like to add?");
-                                        player.addAssists(Integer.parseInt(playerAssists));
-                                    }
-                                }
-                            });
                         }
-//                        if (list2.getSelectedIndex() != -1) {
-//                            data += ", FrameWork Selected: ";
-//                            for (Object frame :list2.getSelectedValues()) {
-//                                data += frame + " ";
-//                            }
-//                        }
-                        label.setText(data);
+                        viewTeamLabel.setText(data);
                     }
                 });
             }
         });
+    }
 
-        JButton b3 = new JButton("Save Data");
-        b3.setBounds(50,100,150,30);
-        b3.setBackground(Color.green);
-        b3.addActionListener(new ActionListener() {
+    public void createViewTeamFrame() {
+        viewTeamFrame = new JFrame();
+        viewTeamLabel = new JLabel();
+        viewTeamLabel.setSize(500,100);
+        selectTeamButton = new JButton("Select");
+        selectTeamButton.setBounds(75,150,80,30);
+        listModelTeams = new DefaultListModel<>();
+        for (Team t : teams.getTeams()) {
+            listModelTeams.addElement(t.getName());
+        }
+        jlistTeams = new JList<>(listModelTeams);
+        jlistTeams.setBounds(75,75, 75,75);
+
+        teamsScrollPane = new JScrollPane();
+        teamsScrollPane.setViewportView(jlistTeams);
+        jlistTeams.setLayoutOrientation(JList.VERTICAL);
+        teamsScrollPane.setBounds(50,50, 125,100);
+
+        viewTeamFrame.add(teamsScrollPane);
+        viewTeamFrame.add(selectTeamButton);
+        viewTeamFrame.add(viewTeamLabel);
+        viewTeamFrame.setSize(250,225);
+        viewTeamFrame.setLayout(null);
+        viewTeamFrame.setVisible(true);
+    }
+
+    public void createViewPlayersFrame() {
+        viewPlayersFrame = new JFrame();
+        listModelPlayers = new DefaultListModel<>();
+        team = teams.getTeams().get(jlistTeams.getSelectedIndex());
+        for (Person p : team.getPeople()) {
+            listModelPlayers.addElement(p.getName());
+        }
+        jlistPlayers = new JList<>(listModelPlayers);
+        jlistPlayers.setBounds(75,75, 75,75);
+
+        newPlayerButton = new JButton("Add New Player");
+        newPlayerButton.setBounds(50,20,120,30);
+
+        editPlayerButton = new JButton("Edit");
+        editPlayerButton.setBounds(50,150,120,30);
+
+        playerScrollPane = new JScrollPane();
+        playerScrollPane.setViewportView(jlistPlayers);
+        jlistPlayers.setLayoutOrientation(JList.VERTICAL);
+        playerScrollPane.setBounds(50,50, 125,100);
+
+        viewPlayersFrame.add(playerScrollPane);
+        viewPlayersFrame.add(newPlayerButton);
+        viewPlayersFrame.add(editPlayerButton);
+        viewPlayersFrame.setSize(250,225);
+        viewPlayersFrame.setLayout(null);
+        viewPlayersFrame.setVisible(true);
+    }
+
+    public void addNewPlayer() {
+        newPlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String playerName = JOptionPane.showInputDialog(mainFrame,"Enter Player Name");
+                player = new Player(playerName);
+                team.addPerson(player);
+            }
+        });
+    }
+
+    public void editPlayer() {
+        editPlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (jlistPlayers.getSelectedIndex() != -1) {
+                    Person person = team.getPeople().get(jlistPlayers.getSelectedIndex());
+                    player = (Player) person;
+                    String playerGoals = JOptionPane.showInputDialog(mainFrame,player.getName()
+                            + " has " + player.getGoals()
+                            + " goals. How many would you like to add?");
+                    player.addGoals(Integer.parseInt(playerGoals));
+                    String playerAssists = JOptionPane.showInputDialog(mainFrame,player.getName()
+                            + " has " + player.getAssists()
+                            + " assists. How many would you like to add?");
+                    player.addAssists(Integer.parseInt(playerAssists));
+                }
+            }
+        });
+    }
+
+    public void saveAndLoadData() {
+
+        saveDataButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveTeams();
-                JOptionPane.showMessageDialog(f,"Data Saved.");
+                JOptionPane.showMessageDialog(mainFrame,"Data Saved.");
             }
         });
 
-        JButton b4 = new JButton("Load Data");
-        b4.setBounds(50,100,150,30);
-        b4.setBackground(Color.green);
-        b4.addActionListener(new ActionListener() {
+
+        loadDataButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadTeams();
-                JOptionPane.showMessageDialog(f,"Data Loaded.");
+                JOptionPane.showMessageDialog(mainFrame,"Data Loaded.");
             }
         });
 
-        panel.add(b1);
-        panel.add(b2);
-        panel.add(b3);
-        panel.add(b4);
-//        f.add(panel);
-//        f.setSize(400,400);
-//        f.setLayout(null);
-//        f.setVisible(true);
-        f.add(panel);
-        f.setLayout(null);
-        f.setVisible(true);
+    }
+
+    public void addToMainPanel() {
+        mainPanel.add(newTeamButton);
+        mainPanel.add(viewTeamsButton);
+        mainPanel.add(saveDataButton);
+        mainPanel.add(loadDataButton);
+        mainFrame.add(mainPanel);
+        mainFrame.setLayout(null);
+        mainFrame.setVisible(true);
     }
 
     // EFFECTS: saves teams to file
@@ -224,19 +272,10 @@ public class Screen {
     private void loadTeams() {
         try {
             teams = jsonReader.read();
-//            teams.addTeam(team);
             System.out.println("Loaded teams from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
-
-//    public void createButton() {
-//        button = new JButton();
-//    }
-
-//    public void createFrame() {
-//        frame = new JFrame();
-//    }
 
 }
