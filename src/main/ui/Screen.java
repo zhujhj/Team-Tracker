@@ -7,98 +7,123 @@ import model.Team;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+// This class is the user interface of the application
 public class Screen {
 
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 700;
-    Player player;
-    Team team;
-    ListOfTeams teams;
+    private Player player;
+    private Team team;
+    private ListOfTeams teams;
     private static final String JSON_STORE = "./data/team.json";
+    private String sportsImage = "./data/sports.png";
     private JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
     private JsonReader jsonReader = new JsonReader(JSON_STORE);
 
-    JFrame mainFrame;
-    JPanel mainPanel;
-    JButton newTeamButton;
-    JButton viewTeamsButton;
-    JButton saveDataButton;
-    JButton loadDataButton;
-    JFrame viewTeamFrame;
-    JLabel viewTeamLabel;
-    JButton selectTeamButton;
-    DefaultListModel<String> listModelTeams;
-    JList<String> jlistTeams;
-    JScrollPane teamsScrollPane;
-    JFrame viewPlayersFrame;
-    DefaultListModel<String> listModelPlayers;
-    JList<String> jlistPlayers;
-    JButton newPlayerButton;
-    JButton editPlayerButton;
-    JScrollPane playerScrollPane;
+    private JLabel teamTrackerLabel;
+    private JFrame mainFrame;
+    private JPanel mainPanel;
+    private JButton newTeamButton;
+    private JButton viewTeamsButton;
+    private JButton saveDataButton;
+    private JButton loadDataButton;
+    private JFrame viewTeamFrame;
+    private JLabel viewTeamLabel;
+    private JButton selectTeamButton;
+    private DefaultListModel<String> listModelTeams;
+    private JList<String> jlistTeams;
+    private JScrollPane teamsScrollPane;
+    private JFrame viewPlayersFrame;
+    private DefaultListModel<String> listModelPlayers;
+    private JList<String> jlistPlayers;
+    private JButton newPlayerButton;
+    private JButton editPlayerButton;
+    private JScrollPane playerScrollPane;
+    private BufferedImage bufferedImage;
+    private ImageIcon displayedImage;
+    private JLabel imageLabel;
+    private File imageFile;
+    private JButton imageButton;
+    private JFrame imageFrame;
 
-    public Screen() {
+    public Screen() throws IOException {
 
         teams = new ListOfTeams();
         createTeamTracker();
 
     }
 
-    public void createTeamTracker() {
+    // EFFECTS: creates the Team Tracker user interface
+    public void createTeamTracker() throws IOException {
         createMainFrame();
         createMainPanel();
         createButtons();
+        createLabel();
 
         addNewTeam();
         viewTeams();
 
-        saveAndLoadData();
-        addToMainPanel();
+        saveData();
+        loadData();
+
+        displayImage();
+
+        addToMainFrame();
     }
 
-    public void createMainFrame() {
+    // EFFECTS: creates Team Tracker main frame
+    private void createMainFrame() {
         mainFrame = new JFrame("Team Tracker");
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
+        mainFrame.setLayout(new FlowLayout());
         mainFrame.setResizable(true);
         mainFrame.setVisible(true);
         mainFrame.setSize(400, 400);
     }
 
-    public void createMainPanel() {
+    // EFFECTS: creates Team Tracker main panel
+    private void createMainPanel() {
         mainPanel = new JPanel();
-        mainPanel.setBounds(80,80,200,200);
+        mainPanel.setBounds(80,80,200,175);
         mainPanel.setBackground(Color.gray);
     }
 
-    public void createButtons() {
+    // EFFECTS: creates buttons in the main screen
+    private void createButtons() {
 
         newTeamButton = new JButton("Add New Team");
-        newTeamButton.setBounds(50,100,150,30);
         newTeamButton.setBackground(Color.yellow);
 
         viewTeamsButton = new JButton("View All Teams");
-        viewTeamsButton.setBounds(50,100,150,30);
         viewTeamsButton.setBackground(Color.green);
 
         saveDataButton = new JButton("Save Data");
-        saveDataButton.setBounds(50,100,150,30);
         saveDataButton.setBackground(Color.green);
 
         loadDataButton = new JButton("Load Data");
-        loadDataButton.setBounds(50,100,150,30);
         loadDataButton.setBackground(Color.green);
+
+        imageButton = new JButton("Display Image");
 
     }
 
-    public void addNewTeam() {
+    private void createLabel() {
+        teamTrackerLabel = new JLabel("Team Tracker");
+        teamTrackerLabel.setBounds(140, 20, 200, 40);
+    }
+
+    // MODIFIES: teams
+    // EFFECTS: allows user to add a new team when new team button is clicked
+    private void addNewTeam() {
         newTeamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,32 +137,39 @@ public class Screen {
         });
     }
 
-    public void viewTeams() {
+    // EFFECTS: allows user to view all teams when view teams button is clicked
+    private void viewTeams() {
         viewTeamsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 createViewTeamFrame();
+                selectTeam();
 
-                selectTeamButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        String data = "";
-                        if (jlistTeams.getSelectedIndex() != -1) {
-
-                            createViewPlayersFrame();
-
-                            addNewPlayer();
-                            editPlayer();
-
-                        }
-                        viewTeamLabel.setText(data);
-                    }
-                });
             }
         });
     }
 
-    public void createViewTeamFrame() {
+    // EFFECTS: allows user to select a team from the view teams screen
+    private void selectTeam() {
+        selectTeamButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String data = "";
+                if (jlistTeams.getSelectedIndex() != -1) {
+
+                    createViewPlayersFrame();
+
+                    addNewPlayer();
+                    editPlayer();
+
+                }
+                viewTeamLabel.setText(data);
+            }
+        });
+    }
+
+    // EFFECTS: creates view team frame with list of teams
+    private void createViewTeamFrame() {
         viewTeamFrame = new JFrame();
         viewTeamLabel = new JLabel();
         viewTeamLabel.setSize(500,100);
@@ -163,7 +195,8 @@ public class Screen {
         viewTeamFrame.setVisible(true);
     }
 
-    public void createViewPlayersFrame() {
+    // EFFECTS: creates view players frame with list of players in team
+    private void createViewPlayersFrame() {
         viewPlayersFrame = new JFrame();
         listModelPlayers = new DefaultListModel<>();
         team = teams.getTeams().get(jlistTeams.getSelectedIndex());
@@ -192,7 +225,9 @@ public class Screen {
         viewPlayersFrame.setVisible(true);
     }
 
-    public void addNewPlayer() {
+    // MODIFIES: team
+    // EFFECTS: allows user to add a new player to a team when button is clicked
+    private void addNewPlayer() {
         newPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -203,7 +238,9 @@ public class Screen {
         });
     }
 
-    public void editPlayer() {
+    // MODIFIES: goals and assists
+    // EFFECTS: allows user to add goals or assists to a player
+    private void editPlayer() {
         editPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -223,7 +260,29 @@ public class Screen {
         });
     }
 
-    public void saveAndLoadData() {
+    private void displayImage() {
+        imageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                imageFrame = new JFrame();
+                imageFile = new File(sportsImage);
+                try {
+                    bufferedImage = ImageIO.read(imageFile);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                displayedImage = new ImageIcon(bufferedImage);
+                imageLabel = new JLabel(displayedImage);
+                imageFrame.add(imageLabel);
+                imageFrame.setLayout(new FlowLayout());
+                imageFrame.setVisible(true);
+                imageFrame.setSize(250,225);
+            }
+        });
+    }
+
+    // EFFECTS: saves teams to a file when button is pressed
+    private void saveData() {
 
         saveDataButton.addActionListener(new ActionListener() {
             @Override
@@ -233,7 +292,11 @@ public class Screen {
             }
         });
 
+    }
 
+    // MODIFIES: this
+    // EFFECTS: loads teams from a file when button is pressed
+    private void loadData() {
         loadDataButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -241,14 +304,16 @@ public class Screen {
                 JOptionPane.showMessageDialog(mainFrame,"Data Loaded.");
             }
         });
-
     }
 
-    public void addToMainPanel() {
+    // EFFECTS: adds buttons to main panel
+    private void addToMainFrame() {
         mainPanel.add(newTeamButton);
         mainPanel.add(viewTeamsButton);
         mainPanel.add(saveDataButton);
         mainPanel.add(loadDataButton);
+        mainPanel.add(imageButton);
+        mainFrame.add(teamTrackerLabel);
         mainFrame.add(mainPanel);
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
@@ -268,7 +333,6 @@ public class Screen {
 
     // MODIFIES: this
     // EFFECTS: loads list of teams from file
-
     private void loadTeams() {
         try {
             teams = jsonReader.read();
