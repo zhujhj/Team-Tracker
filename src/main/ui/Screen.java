@@ -53,6 +53,8 @@ public class Screen {
     private File imageFile;
     private JButton imageButton;
     private JFrame imageFrame;
+    private JLabel addPlayersLabel;
+    private JLabel imageDescription;
 
     public Screen() throws IOException {
 
@@ -132,7 +134,12 @@ public class Screen {
                 team = new Team(teamName);
                 team.setSport(teamSport);
                 teams.addTeam(team);
-                System.out.println(teams.toString());
+
+                listModelTeams.addElement(team.getName());
+                jlistTeams = new JList<>(listModelTeams);
+                jlistTeams.setBounds(75,75, 75,75);
+                teamsScrollPane.setViewportView(jlistTeams);
+
             }
         });
     }
@@ -171,8 +178,8 @@ public class Screen {
     // EFFECTS: creates view team frame with list of teams
     private void createViewTeamFrame() {
         viewTeamFrame = new JFrame();
-        viewTeamLabel = new JLabel();
-        viewTeamLabel.setSize(500,100);
+        viewTeamLabel = new JLabel("Teams");
+        viewTeamLabel.setBounds(90, 25, 100,15);
         selectTeamButton = new JButton("Select");
         selectTeamButton.setBounds(75,150,80,30);
         listModelTeams = new DefaultListModel<>();
@@ -206,8 +213,11 @@ public class Screen {
         jlistPlayers = new JList<>(listModelPlayers);
         jlistPlayers.setBounds(75,75, 75,75);
 
-        newPlayerButton = new JButton("Add New Player");
-        newPlayerButton.setBounds(50,20,120,30);
+        addPlayersLabel = new JLabel(team.getName());
+        addPlayersLabel.setBounds(50, 25, 120, 15);
+
+        newPlayerButton = new JButton("Add Player");
+        newPlayerButton.setBounds(50,175,120,30);
 
         editPlayerButton = new JButton("Edit");
         editPlayerButton.setBounds(50,150,120,30);
@@ -217,10 +227,16 @@ public class Screen {
         jlistPlayers.setLayoutOrientation(JList.VERTICAL);
         playerScrollPane.setBounds(50,50, 125,100);
 
+        addToViewPlayersFrame();
+    }
+
+    // EFFECTS: adds buttons, labels and lists to the view player frame
+    private void addToViewPlayersFrame() {
+        viewPlayersFrame.add(addPlayersLabel);
         viewPlayersFrame.add(playerScrollPane);
         viewPlayersFrame.add(newPlayerButton);
         viewPlayersFrame.add(editPlayerButton);
-        viewPlayersFrame.setSize(250,225);
+        viewPlayersFrame.setSize(250,250);
         viewPlayersFrame.setLayout(null);
         viewPlayersFrame.setVisible(true);
     }
@@ -234,6 +250,11 @@ public class Screen {
                 String playerName = JOptionPane.showInputDialog(mainFrame,"Enter Player Name");
                 player = new Player(playerName);
                 team.addPerson(player);
+
+                listModelPlayers.addElement(player.getName());
+                jlistPlayers = new JList<>(listModelPlayers);
+                jlistPlayers.setBounds(75,75, 75,75);
+                playerScrollPane.setViewportView(jlistPlayers);
             }
         });
     }
@@ -260,6 +281,7 @@ public class Screen {
         });
     }
 
+    // EFFECTS: creates a frame with a picture and description
     private void displayImage() {
         imageButton.addActionListener(new ActionListener() {
             @Override
@@ -273,7 +295,12 @@ public class Screen {
                 }
                 displayedImage = new ImageIcon(bufferedImage);
                 imageLabel = new JLabel(displayedImage);
+
+                imageDescription = new JLabel("Thank you for using Team Tracker!");
+                imageDescription.setBounds(10, 100, 100, 15);
+
                 imageFrame.add(imageLabel);
+                imageFrame.add(imageDescription);
                 imageFrame.setLayout(new FlowLayout());
                 imageFrame.setVisible(true);
                 imageFrame.setSize(250,225);
