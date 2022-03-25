@@ -42,6 +42,7 @@ public class ListOfTeams implements Writable {
         return listOfTeams;
     }
 
+    // EFFECTS: returns
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
