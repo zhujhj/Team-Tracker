@@ -23,6 +23,7 @@ public class Team implements Writable {
     //MODIFIES: people
     public void addPerson(Person person) {
         people.add(person);
+        EventLog.getInstance().logEvent(new Event("Person " + person.getName() + " added to " + name + "."));
     }
 
     public void setPeople(ArrayList<Person> people) {

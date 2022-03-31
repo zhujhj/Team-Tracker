@@ -1,9 +1,7 @@
 package ui;
 
-import model.ListOfTeams;
-import model.Person;
-import model.Player;
-import model.Team;
+import model.*;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -12,10 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 // This class is the user interface of the application
 public class Screen {
@@ -79,6 +80,8 @@ public class Screen {
         displayImage();
 
         addToMainFrame();
+
+        printEventLog();
     }
 
     // EFFECTS: creates Team Tracker main frame
@@ -367,6 +370,20 @@ public class Screen {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+    }
+
+    private void printEventLog() {
+        mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("WindowClosingDemo.windowClosing");
+                for (Iterator<model.Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+                    Event event = it.next();
+                    System.out.println(event.getDescription());
+                }
+                System.exit(0);
+            }
+        });
     }
 
 }

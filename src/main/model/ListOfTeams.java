@@ -20,6 +20,7 @@ public class ListOfTeams implements Writable {
     //MODIFIES: teams
     public void addTeam(Team team) {
         teams.add(team);
+        EventLog.getInstance().logEvent(new Event("Team " + team.getName() + " added to ListOfTeams"));
     }
 
     public Team getTeam(int i) {
