@@ -46,23 +46,12 @@ Person Mitch Marner added to Leafs.
 
 ### Phase 4: Task 3
 
-There are many changes I would make to my project if I had more time. 
+Here are some changes I would make to my project if I had more time: 
 
-First of all, there are ways to improve my user interface so it would    
-be easier for someone to use the application. For example, right now,   
-each button that is clicked in the main panel opens a new frame. If I had   
-time, I would make it so some of the buttons would keep the application   
-in the same frame, and the user would be able to go back to the home    
-screen easily. Sometimes the frames that open block other frames, and    
-the user would have to drag them away. 
-
-Also, if I had more time, I would improve my view players interface.   
-Instead of the panels where the user would type a value to add goals     
-and assists, I would make it so there would be a panel where the user    
-can edit the goals and assists using a (-) and (+) button. I would also   
-make it so the user would be able to view the goals and assists of the    
-player without selecting the player.
-
-There are also some features that could be added, as some features   
-mentioned in the previous paragraphs have not been implemented yet.
+- Have only one frame most of the time, instead of opening a new frame every time a button is clicked
+- Have a back button for this one frame, so it is still easy to navigate through the application
+- Instead of adding goals/assists by typing a number into a text field, I would have (+) and (-) buttons
+- Add a new page when a player is clicked, so the user can see all of their info, including name, goals and assists
+- Add more information of the team page, showing the sport, as I did not really make use of the sport variable
+- Add more sports related pictures so that it is a more immersive experience
 
