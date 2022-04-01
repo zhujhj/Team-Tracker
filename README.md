@@ -32,3 +32,37 @@ because I know it is something my younger self would have wanted.
 - Save list of teams to a file
 - Load list of teams from a file
 
+### Phase 4: Task 2
+
+Here is an example of a series of events that is displayed after the   
+application closes:
+
+Team Raptors added to ListOfTeams.   
+Team Leafs added to ListOfTeams.    
+Person Pascal Siakam added to Raptors.   
+Person Fred Vanvleet added to Raptors.   
+Person Auston Matthews added to Leafs.   
+Person Mitch Marner added to Leafs.
+
+### Phase 4: Task 3
+
+There are many changes I would make to my project if I had more time. 
+
+First of all, there are ways to improve my user interface so it would    
+be easier for someone to use the application. For example, right now,   
+each button that is clicked in the main panel opens a new frame. If I had   
+time, I would make it so some of the buttons would keep the application   
+in the same frame, and the user would be able to go back to the home    
+screen easily. Sometimes the frames that open block other frames, and    
+the user would have to drag them away. 
+
+Also, if I had more time, I would improve my view players interface.   
+Instead of the panels where the user would type a value to add goals     
+and assists, I would make it so there would be a panel where the user    
+can edit the goals and assists using a (-) and (+) button. I would also   
+make it so the user would be able to view the goals and assists of the    
+player without selecting the player.
+
+There are also some features that could be added, as some features   
+mentioned in the previous paragraphs have not been implemented yet.
+

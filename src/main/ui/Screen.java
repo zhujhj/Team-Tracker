@@ -372,11 +372,11 @@ public class Screen {
         }
     }
 
+    // EFFECTS: prints out events that occurred when program was run
     private void printEventLog() {
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("WindowClosingDemo.windowClosing");
                 for (Iterator<model.Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
                     Event event = it.next();
                     System.out.println(event.getDescription());
